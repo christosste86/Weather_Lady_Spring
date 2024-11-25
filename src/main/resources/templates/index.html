@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Lady</title>
+</head>
+<body>
+<header>
+    <h1>WEATHER FORECAST</h1>
+    <h1 th:text="${welcomeString}"></h1>
+</header>
+<main>
+    <p th:text="${locations.size}"></p>
+    <p th:unless="${locations.size()}">No location found</p>
+    <table th:if="${locations.size() > 0}">
+        <thead>
+        <tr>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Country</th>
+            <th>County</th>
+            <th>Municipality</th>
+            <th>City</th>
+            <th>Suburb</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="location : ${locations}">
+            <td th:text="${location.getLatitude()}"></td>
+            <td th:text="${location.getLongitude()}"></td>
+            <td th:text="${location.getCountry()}"></td>
+            <td th:text="${location.getCounty()}"></td>
+            <td th:text="${location.getCity()}"></td>
+            <td th:text="${location.getSuburb()}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/add-location" th:href="@{add-location}">Add new location</a>
+</main>
+</body>
+</html>

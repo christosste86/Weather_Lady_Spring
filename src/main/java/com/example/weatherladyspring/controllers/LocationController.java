@@ -13,10 +13,16 @@ import java.util.Date;
 public class LocationController {
 
     @GetMapping("/")
-    public String sayHello(Model model){
+    public String getMainPage(Model model){
         Date date = new Date();
         model.addAttribute("welcomeString", date.toString());
         model.addAttribute("locations", LocationService.getCitiesLocationsFromSearch("Thessaloniki"));
         return "index";
+    }
+
+    @GetMapping("/add-location")
+    public String addLocationForm(){
+
+        return "add-location";
     }
 }
