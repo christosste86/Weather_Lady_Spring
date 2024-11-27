@@ -8,100 +8,113 @@ import java.util.List;
 public class Location {
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    private double latitude;
-    private double longitude;
-    private String country;
-    private String county;
-    private String municipality;
-    private String city;
-    private String suburb;
+    private Double latitude;
+    private Double longitude;
+    private String osmType;
+    private String category;
+    private String type;
+    private String addressType;
+    private String name;
+    private String displayName;
 
     public Location() {
     }
 
-    public Location(Long id, double latitude, double longitude, String country, String county, String municipality, String city, String suburb, List<Weather> weathers) {
+    public Location(Integer id, Double latitude, Double longitude, String osmType, String category, String type, String addressType, String name, String displayName) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.country = country;
-        this.county = county;
-        this.municipality = municipality;
-        this.city = city;
-        this.suburb = suburb;
-        this.weathers = weathers;
+        this.osmType = osmType;
+        this.category = category;
+        this.type = type;
+        this.addressType = addressType;
+        this.name = name;
+        this.displayName = displayName;
     }
 
-    //    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Weather> weathers = new ArrayList<>();
-
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public String getSuburb() {
-        return suburb;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public void setLongitude(double longitude) {
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public String getOsmType() {
+        return osmType;
     }
 
-    public void setCounty(String county) {
-        this.county = county;
+    public void setOsmType(String osmType) {
+        this.osmType = osmType;
     }
 
-    public void setMunicipality(String municipality) {
-        this.municipality = municipality;
+    public String getCategory() {
+        return category;
     }
 
-    public void setSuburb(String suburb) {
-        this.suburb = suburb;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getCity() {
-        return city;
+
+    public String getType() {
+        return type;
     }
 
-    public String getCountry() {
-        return country;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getCounty() {
-        return county;
+    public String getAddressType() {
+        return addressType;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setAddressType(String addressType) {
+        this.addressType = addressType;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
     @Override
     public String toString() {
-
-        return String.format("%s%s%s%s%s",
-                this.suburb == null ? "" : this.suburb +", ",
-                this.city == null ? "" : this.city +", ",
-                this.municipality == null ? "" : this.municipality +", ",
-                this.county == null ? "" : this.county+", ",
-                this.country == null ? "" : this.country);
+        return "Location{" +
+                "id=" + id +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", osm_type='" + osmType + '\'' +
+                ", category='" + category + '\'' +
+                ", type='" + type + '\'' +
+                ", addresstype='" + addressType + '\'' +
+                ", name='" + name + '\'' +
+                ", display_name='" + displayName + '\'' +
+                '}';
     }
-
 }

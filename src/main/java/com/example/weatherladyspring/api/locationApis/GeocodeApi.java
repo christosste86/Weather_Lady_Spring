@@ -1,4 +1,4 @@
-package com.example.weatherladyspring.api.geocode;
+package com.example.weatherladyspring.api.locationApis;
 
 import com.example.weatherladyspring.api.ApiConnect;
 import com.example.weatherladyspring.models.Coordinates;
@@ -46,6 +46,7 @@ public class GeocodeApi {
 
     private void coordinates(String url) {
         JSONArray jsonArray = new JSONArray(geocode.getJsonString());
+
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject item = jsonArray.getJSONObject(i);
             double latitude = item.getDouble("lat");
