@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <meta charset="UTF-8">
     <title>Weather Lady</title>
 </head>
@@ -19,14 +20,47 @@
     <table>
         <thead>
             <tr>
-                <th>Address</th>
+                <th>Name</th>
+                <th>County</th>
+                <th>Country</th>
+                <th>Suburb</th>
                 <th>Weather</th>
+                <td>Favorites</td>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="location : ${favoritesLocations}">
+            <td th:text="${location.getName()}"></td>
+            <td th:text="${location.getCounty()}"></td>
+            <td th:text="${location.getCountry()}"></td>
+            <td th:text="${location.getSuburb()}"></td>
+            <td> <a th:href="@{location-weather/{location}(location=${location.getId()})}">details</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>County</th>
+                <th>Country</th>
+                <th>Suburb</th>
+                <th>Weather</th>
+                <td>Favorites</td>
             </tr>
         </thead>
         <tbody>
         <tr th:each="location : ${locations}">
-            <td th:text="${location.getDisplayName()}"></td>
-            <td> <a th:href="@{location-weather/{location}(location=${location.getId})}">details</a></td>
+            <td th:text="${location.getName()}"></td>
+            <td th:text="${location.getCounty()}"></td>
+            <td th:text="${location.getCountry()}"></td>
+            <td th:text="${location.getSuburb()}"></td>
+            <td> <a th:href="@{location-weather/{location}(location=${location.getId()})}">details</a></td>
+            <td>
+                <form method="get" th:action = "@{/add-favorite/{location} (location=${location.getId()})}" >
+                    <button type="submit">add</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

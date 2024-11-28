@@ -22,18 +22,32 @@ public class OpenStreetMapApi {
         JSONArray jsonArray = new JSONArray(geocode.getJsonString());
         List<Location> locationlist  = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
+            Location location = new Location();
             JSONObject item = jsonArray.getJSONObject(i);
             int id = i;
-            Double latitude = item.getDouble("lat");
-            Double longitude = item.getDouble("lon");
-            String osmType = item.getString("osm_type");
-            String category = item.getString("category");
-            String type = item.getString("type");
-            String addressType = item.getString("addresstype");
-            String name = item.getString("name");
-            String displayName = item.getString("display_name");
-            locationlist.add(new Location(id, latitude, longitude, osmType, category, type, addressType, name, displayName));
+            location.setId(id);
+            location.setLatitude(item.getDouble("lat"));
+            location.setLongitude(item.getDouble("lon"));
+            location.setAddressType(item.getString("addresstype"));
+            location.setName(item.getString("name"));
+            location.setDisplayName(item.getString("display_name"));
         }return locationlist;
+    }
+
+    private String[] addressTypes(){
+        return new String[] {"city", "hamlet", "town", "village"};
+    }
+
+    private boolean isInAddressTypesList(Location location){
+        for (String addressType : addressTypes()){
+            if (location.getAddressType().equalsIgnoreCase(addressType)){
+                return true;
+            }
+        }return false;
+    }
+
+    public List<Location> getFilteredLocations(){
+        return getLocationObjects().stream().filter(this::isInAddressTypesList).toList();
     }
 
 }

@@ -1,11 +1,30 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <meta charset="UTF-8">
     <title>Location Weather</title>
 </head>
 <body>
     <h1 th:text="${location.getDisplayName()}">Hi</h1>
+    <table>
+        <thead>
+            <tr>
+                <td>Time</td>
+                <td>Temperature</td>
+                <td>Humidity</td>
+                <td>Wind Speed</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="weather : ${weathers}">
+                <td th:text="${weather.getTime()}"></td>
+                <td th:text="${weather.getTemperatureInC()}"></td>
+                <td th:text="${weather.getHumidity()}"></td>
+                <td th:text="${weather.getWindSpeed()}"></td>
+            </tr>
+        </tbody>
+    </table>
 
 </body>
 </html>
