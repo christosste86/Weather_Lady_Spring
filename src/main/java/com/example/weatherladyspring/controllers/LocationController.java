@@ -32,9 +32,9 @@ public class LocationController {
         Date date = new Date();
         model.addAttribute("welcomeString", date.toString());
         if(Objects.nonNull(search)){
-//            ApiCombination apiCombination = new ApiCombination(search);
-            OpenStreetMapApi openStreetMapApi = new OpenStreetMapApi(search);
-            this.locationsFromSearch = openStreetMapApi.getLocationObjects();
+            ApiCombination apiCombination = new ApiCombination(search);
+
+            this.locationsFromSearch = apiCombination.getFilteredLocation();
             model.addAttribute("locations", this.locationsFromSearch);
         }else{
             model.addAttribute("locations", new ArrayList<>());

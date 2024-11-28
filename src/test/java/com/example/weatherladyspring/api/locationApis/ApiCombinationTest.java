@@ -6,16 +6,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ApiCombinationTest {
     @Test
-    void listTest(){
+    void filteredListTestSize(){
         ApiCombination apiCombination = new ApiCombination("Thessaloniki");
-        apiCombination.getFilteredLocation().forEach(o-> {
-            System.out.println(o.getLatitude());
-            System.out.println(o.getLongitude());
-            System.out.println(o.getCity());
-            System.out.println(o.getCountry());
-            System.out.println(o.getCounty());
-            System.out.println(o.getSuburb());
-        });
+        assertEquals(1,apiCombination.getFilteredLocation().size());
+    }
+
+    @Test
+    void ListSizeTest(){
+        OpenStreetMapApi openStreetMapApi = new OpenStreetMapApi("Thessaloniki");
+        assertEquals(2,openStreetMapApi.getLocationObjects().size());
     }
 
 }

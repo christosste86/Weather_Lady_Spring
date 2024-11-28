@@ -22,6 +22,17 @@ public class Location {
     private String suburb;
 
     public Location() {
+        this.id = null;
+        this.latitude = null;
+        this.longitude = null;
+        this.addressType = null;
+        this.name = null;
+        this.displayName = null;
+        this.country = null;
+        this.county = null;
+        this.municipality = null;
+        this.city = null;
+        this.suburb = null;
     }
 
     public Location(Integer id, Double latitude, Double longitude, String addressType, String name, String displayName, String country, String county, String municipality, String city, String suburb) {

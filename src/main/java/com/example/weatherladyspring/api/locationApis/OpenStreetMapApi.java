@@ -31,6 +31,7 @@ public class OpenStreetMapApi {
             location.setAddressType(item.getString("addresstype"));
             location.setName(item.getString("name"));
             location.setDisplayName(item.getString("display_name"));
+            locationlist.add(location);
         }return locationlist;
     }
 
