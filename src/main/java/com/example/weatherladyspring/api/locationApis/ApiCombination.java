@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ApiCombination {
-    private List<Location> filteredLocation = new ArrayList<>();
+    private final List<Location> filteredLocation = new ArrayList<>();
 
     public ApiCombination(String search) {
         addInfoFromGeocodeApi(search);
@@ -29,7 +29,7 @@ public class ApiCombination {
             if(key.equals("suburb")){newlocation.setSuburb(adressJsonObject.get(key).toString());}
             if(key.equals("country")){newlocation.setCountry(adressJsonObject.get(key).toString());}
             if(key.equals("city") || key.equals("town") || key.equals("village")){
-                newlocation.setCity(adressJsonObject.get(key).toString());
+                newlocation.setCityTownVillage(adressJsonObject.get(key).toString());
             }
         }return newlocation;
     }
@@ -43,7 +43,7 @@ public class ApiCombination {
             l.setMunicipality(geocodeLocation.getMunicipality());
             l.setSuburb(geocodeLocation.getSuburb());
             l.setCountry(geocodeLocation.getCountry());
-            l.setCity(geocodeLocation.getCity());
+            l.setCityTownVillage(geocodeLocation.getCityTownVillage());
             this.filteredLocation.add(l);
         });
     }

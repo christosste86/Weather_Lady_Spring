@@ -1,28 +1,40 @@
 package com.example.weatherladyspring.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.*;
 
-//@Entity
-//@Table(name = "Locations")
+@Entity
+@Table(name = "Locations")
 public class Location {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
+    @Column(name = "latitudes")
     private Double latitude;
+
+    @Column(name = "longitudes")
     private Double longitude;
+
+    @Column(name = "address_types")
     private String addressType;
+
+    @Column(name = "place_name")
     private String name;
+
+    @Column(name = "display_name")
     private String displayName;
+
     private String country;
+
     private String county;
+
     private String municipality;
-    private String city;
+
+    private String cityTownVillage;
+
     private String suburb;
 
     public Location() {
-        this.id = null;
         this.latitude = null;
         this.longitude = null;
         this.addressType = null;
@@ -31,12 +43,11 @@ public class Location {
         this.country = null;
         this.county = null;
         this.municipality = null;
-        this.city = null;
+        this.cityTownVillage = null;
         this.suburb = null;
     }
 
-    public Location(Integer id, Double latitude, Double longitude, String addressType, String name, String displayName, String country, String county, String municipality, String city, String suburb) {
-        this.id = id;
+    public Location(Double latitude, Double longitude, String addressType, String name, String displayName, String country, String county, String municipality, String cityTownVillage, String suburb) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.addressType = addressType;
@@ -45,15 +56,15 @@ public class Location {
         this.country = country;
         this.county = county;
         this.municipality = municipality;
-        this.city = city;
+        this.cityTownVillage = cityTownVillage;
         this.suburb = suburb;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -89,9 +100,6 @@ public class Location {
         this.name = name;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
@@ -121,12 +129,12 @@ public class Location {
         this.municipality = municipality;
     }
 
-    public String getCity() {
-        return city;
+    public String getCityTownVillage() {
+        return cityTownVillage;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCityTownVillage(String cityTownVillage) {
+        this.cityTownVillage = cityTownVillage;
     }
 
     public String getSuburb() {
@@ -149,7 +157,7 @@ public class Location {
                 ", country='" + country + '\'' +
                 ", county='" + county + '\'' +
                 ", municipality='" + municipality + '\'' +
-                ", city='" + city + '\'' +
+                ", cityTownVillage='" + cityTownVillage + '\'' +
                 ", suburb='" + suburb + '\'' +
                 '}';
     }
