@@ -1,9 +1,6 @@
 package com.example.weatherladyspring.controllers;
 
-import com.example.weatherladyspring.api.locationApis.ApiCombination;
-import com.example.weatherladyspring.api.locationApis.OpenStreetMapApi;
 import com.example.weatherladyspring.api.weatherApis.OpenMeteoApi;
-import com.example.weatherladyspring.api.weatherApis.OpenWeatherMap;
 import com.example.weatherladyspring.models.Location;
 
 import com.example.weatherladyspring.services.LocationService;
@@ -16,15 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Controller
 public class LocationController {
     private String search;
-    private List<Location> locationsFromSearch = new ArrayList<>();
-    private List<Location> favoritesLocations = new ArrayList<>();
     private final LocationService locationService;
 
     @Autowired

@@ -1,49 +1,58 @@
 package com.example.weatherladyspring.services;
 
 
-import com.example.weatherladyspring.api.locationApis.ApiCombination;
 import com.example.weatherladyspring.models.FavoriteLocations;
 import com.example.weatherladyspring.models.Location;
 import com.example.weatherladyspring.repositories.FavoriteLocationsRepository;
 import com.example.weatherladyspring.repositories.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class LocationServiceImpl implements LocationService{
 
     private final LocationRepository locationRepository;
     private final FavoriteLocationsRepository favoriteLocationsRepository;
+    private String search;
 
-    @Autowired
+    @Autowired //
     public LocationServiceImpl(LocationRepository locationRepository, FavoriteLocationsRepository favoriteLocationsRepository) {
         this.locationRepository = locationRepository;
         this.favoriteLocationsRepository = favoriteLocationsRepository;
     }
 
-
-    private List<Location> getLocationsFromApi(String search){
-        ApiCombination apiCombination = new ApiCombination(search);
-        return apiCombination.getFilteredLocation();
-    }
-
-
-    private List<Location> getLocationsFromDB(String search) {
-        return locationRepository.findAll().stream().filter(l->l.getCityTownVillage().equalsIgnoreCase(search)).toList();
+    private void saveToDBIfNotExist(){
+        locationRepository.getLocationsFromApi(this.search).forEach(apil -> {
+            if(locationRepository.findAll().isEmpty()){
+                locationRepository.save(apil);
+            }else if(locationRepository.findAll()
+                        .stream()
+                        .filter(dbl -> dbl.getLatitude() == apil.getLatitude() && dbl.getLongitude() == apil.getLongitude()).toList().isEmpty()){
+                locationRepository.save(apil);
+            }
+        });
     }
 
     @Override
-    public List<Location> getLocations(String search){
-        if(!getLocationsFromDB(search).isEmpty()){
-            return getLocationsFromDB(search);
-        }else{
-            getLocationsFromApi(search).forEach(location -> {
-                locationRepository.save(location);
+    public List<Location> getLocations(String search) {
+        this.search = search;
+        saveToDBIfNotExist();
+        List<Location> locationFromDB = new ArrayList<>();
+        locationRepository.getLocationsFromApi(this.search).forEach(apiL -> {
+            locationRepository.findAll().forEach(dbL -> {
+                if(dbL.getLatitude() == apiL.getLatitude() && dbL.getLongitude() == apiL.getLongitude()){
+                    locationFromDB.add(dbL);
+                }
             });
-        }return getLocationsFromDB(search);
+        });
+        return locationFromDB;
     }
+
 
     @Override
     public List<Location> getFavoriteLocationsFromDB() {
@@ -68,7 +77,15 @@ public class LocationServiceImpl implements LocationService{
     @Override
     public void saveLocationToFavoriteLocations(Long id) {
         FavoriteLocations favoriteLocation = new FavoriteLocations(id);
-        favoriteLocationsRepository.save(favoriteLocation);
+        if(!isExistFavoriteLocation(id)) {
+            favoriteLocationsRepository.save(favoriteLocation);
+        }
+    }
+
+    private boolean isExistFavoriteLocation(Long id){
+        if(!favoriteLocationsRepository.findAll().stream().filter(fl -> fl.getLocationId() == id).toList().isEmpty()){
+            return true;
+        }return false;
     }
 
     @Override
