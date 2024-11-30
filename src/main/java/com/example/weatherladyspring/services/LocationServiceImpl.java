@@ -26,31 +26,31 @@ public class LocationServiceImpl implements LocationService{
         this.favoriteLocationsRepository = favoriteLocationsRepository;
     }
 
-    private void saveToDBIfNotExist(){
-        locationRepository.getLocationsFromApi(this.search).forEach(apil -> {
+    private List<Location> apiLocations(){
+        List<Location> apiLocations = locationRepository.getLocationsFromApi(this.search);
+        apiLocations.forEach(apiL -> {
             if(locationRepository.findAll().isEmpty()){
-                locationRepository.save(apil);
+                locationRepository.save(apiL);
             }else if(locationRepository.findAll()
                         .stream()
-                        .filter(dbl -> dbl.getLatitude() == apil.getLatitude() && dbl.getLongitude() == apil.getLongitude()).toList().isEmpty()){
-                locationRepository.save(apil);
+                        .filter(dbl -> Objects.equals(dbl.getLatitude(), apiL.getLatitude()) && Objects.equals(dbl.getLongitude(),apiL.getLongitude())).toList().isEmpty()){
+                locationRepository.save(apiL);
             }
-        });
+        });return apiLocations;
     }
 
     @Override
     public List<Location> getLocations(String search) {
         this.search = search;
-        saveToDBIfNotExist();
-        List<Location> locationFromDB = new ArrayList<>();
-        locationRepository.getLocationsFromApi(this.search).forEach(apiL -> {
+        List<Location> filteredLocations = new ArrayList<>();
+        apiLocations().forEach(apiL -> {
             locationRepository.findAll().forEach(dbL -> {
-                if(dbL.getLatitude() == apiL.getLatitude() && dbL.getLongitude() == apiL.getLongitude()){
-                    locationFromDB.add(dbL);
+                if(Objects.equals(dbL.getLatitude(), apiL.getLatitude()) && Objects.equals(dbL.getLongitude(), apiL.getLongitude())){
+                    filteredLocations.add(dbL);
                 }
             });
         });
-        return locationFromDB;
+        return filteredLocations;
     }
 
 

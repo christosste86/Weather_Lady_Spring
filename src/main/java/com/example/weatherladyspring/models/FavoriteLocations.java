@@ -13,6 +13,9 @@ public class FavoriteLocations {
     @Column(name = "location_id")
     private long locationId;
 
+    public FavoriteLocations() {
+    }
+
     public FavoriteLocations(long locationId) {
         this.locationId = locationId;
     }
