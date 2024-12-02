@@ -2,12 +2,7 @@ package com.example.weatherladyspring.api.weatherApis;
 
 import com.example.weatherladyspring.api.ApiConnect;
 
-import com.example.weatherladyspring.api.locationApis.OpenStreetMapApi;
-import com.example.weatherladyspring.models.Location;
 import com.example.weatherladyspring.models.Weather;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -64,13 +59,5 @@ public class OpenMeteoApi {
             Double windSpeed = windArray().getDouble(i);
             weatherLocationPerHour.add(new Weather(time, this.latitude, this.longitude, temperatureInC, humidity, windSpeed));
         }return weatherLocationPerHour;
-    }
-
-    public static void main(String[] args) {
-        OpenStreetMapApi openStreetMapApi = new OpenStreetMapApi("Thessaloniki");
-        openStreetMapApi.getLocationObjects().forEach(location -> {
-            OpenMeteoApi openMeteoApi = new OpenMeteoApi(location.getLatitude(), location.getLongitude());
-            openMeteoApi.getWeatherLocationPerHour().forEach(System.out::println);
-        });
     }
 }

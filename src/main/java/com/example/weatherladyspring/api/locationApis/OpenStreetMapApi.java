@@ -24,8 +24,6 @@ public class OpenStreetMapApi {
         for (int i = 0; i < jsonArray.length(); i++) {
             Location location = new Location();
             JSONObject item = jsonArray.getJSONObject(i);
-            int id = i;
-            location.setId(id);
             location.setLatitude(item.getDouble("lat"));
             location.setLongitude(item.getDouble("lon"));
             location.setAddressType(item.getString("addresstype"));
