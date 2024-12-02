@@ -3,6 +3,7 @@ package com.example.weatherladyspring.services;
 
 import com.example.weatherladyspring.models.Location;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface LocationService {

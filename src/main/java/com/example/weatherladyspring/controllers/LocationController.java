@@ -34,6 +34,7 @@ public class LocationController {
             model.addAttribute("locations", new ArrayList<>());
         }
         model.addAttribute("favoritesLocations", locationService.getFavoriteLocationsFromDB());
+        model.addAttribute("actual-temperature", )
         return "index";
     }
 

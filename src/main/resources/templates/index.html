@@ -2,41 +2,47 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="../static/css/styles.css">
     <meta charset="UTF-8">
     <title>Weather Lady</title>
 </head>
 <body>
 <header>
-    <h1>WEATHER FORECAST</h1>
+    <div class="topnav">
+        <a class="active" href="#home">Home</a>
+        <div class="search-container">
+            <form action="/action_page.php" th:action = "@{/}" method="get">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
 </header>
 <main>
-    <p th:unless="${locations.size()}">No location found</p>
-    <h5>Search</h5>
-    <form th:action = "@{/}" method="get">
-        <input type="text" name="search">
-        <button type="submit">Submit</button>
-    </form>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>County</th>
-                <th>Country</th>
-                <th>Suburb</th>
-                <th>Weather</th>
-                <td>Favorites</td>
-            </tr>
-        </thead>
-        <tbody>
-        <tr th:each="location : ${favoritesLocations}">
-            <td th:text="${location.getName()}"></td>
-            <td th:text="${location.getCounty()}"></td>
-            <td th:text="${location.getCountry()}"></td>
-            <td th:text="${location.getSuburb()}"></td>
-            <td> <a th:href="@{location-weather/{location}(location=${location.getId()})}">details</a></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="favorites">
+        <div class="card" th:each="favorite : ${favoritesLocations}">
+            <a th:href="@{location-weather/{location}(location=${favorite.getId()})}">
+                <div>
+                    <h2 th:text="${favorite.getName()}">Θεσσαλονίκη</h2>
+                    <p th:text="${favorite.getCountry()}">Greece</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><img src="../img/icons/temperature.png"></th>
+                                <th><img src="../img/icons/humidity.png"></th>
+                                <th><img src="../img/icons/wind.png"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </a>
+        </div>
+    </div>
     <table>
         <thead>
             <tr>
