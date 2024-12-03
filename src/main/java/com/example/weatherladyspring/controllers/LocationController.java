@@ -33,8 +33,10 @@ public class LocationController {
         }else{
             model.addAttribute("locations", new ArrayList<>());
         }
-        model.addAttribute("favoritesLocations", locationService.getFavoriteLocationsFromDB());
-        model.addAttribute("actual-temperature", )
+        model.addAttribute("favoritesLocations", locationService.getFavoriteLocations());
+        locationService.getLocationsFromDb().forEach(System.out::println);
+        model.addAttribute("favoriteLocationsWeather", locationService.favoriteLocationWeathers());
+        locationService.favoriteLocationWeathers().forEach(System.out::println);
         return "index";
     }
 

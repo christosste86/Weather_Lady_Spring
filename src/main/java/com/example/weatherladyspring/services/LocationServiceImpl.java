@@ -1,13 +1,16 @@
 package com.example.weatherladyspring.services;
 
 
+import com.example.weatherladyspring.api.weatherApis.OpenMeteoApi;
 import com.example.weatherladyspring.models.FavoriteLocations;
 import com.example.weatherladyspring.models.Location;
+import com.example.weatherladyspring.models.Weather;
 import com.example.weatherladyspring.repositories.FavoriteLocationsRepository;
 import com.example.weatherladyspring.repositories.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,11 +22,13 @@ public class LocationServiceImpl implements LocationService{
     private final LocationRepository locationRepository;
     private final FavoriteLocationsRepository favoriteLocationsRepository;
     private String search;
+    private List<Location> favoriteLocations = new ArrayList<>();
 
     @Autowired //
     public LocationServiceImpl(LocationRepository locationRepository, FavoriteLocationsRepository favoriteLocationsRepository) {
         this.locationRepository = locationRepository;
         this.favoriteLocationsRepository = favoriteLocationsRepository;
+        this.favoriteLocations = getFavoriteLocationsFromDB();
     }
 
     private List<Location> apiLocations(){
@@ -53,16 +58,18 @@ public class LocationServiceImpl implements LocationService{
         return filteredLocations;
     }
 
+    @Override
+    public List<Location> getLocationsFromDb() {
+        return locationRepository.findAll();
+    }
+
 
     @Override
     public List<Location> getFavoriteLocationsFromDB() {
         List<Location> favoriteLocations = new ArrayList<>();
         favoriteLocationsRepository.findAll().forEach(fl ->{
-            locationRepository.findAll().forEach(l -> {
-                if(l.getId() == fl.getLocationId()){
-                    favoriteLocations.add(l);
-                }
-            });
+//           favoriteLocationsRepository.findFavoriteLocationById(fl.getLocationId());
+            locationRepository.getLocationById(fl.getLocationId());
         });
         return favoriteLocations;
     }
@@ -83,9 +90,7 @@ public class LocationServiceImpl implements LocationService{
     }
 
     private boolean isExistFavoriteLocation(Long id){
-        if(!favoriteLocationsRepository.findAll().stream().filter(fl -> fl.getLocationId() == id).toList().isEmpty()){
-            return true;
-        }return false;
+        return !favoriteLocationsRepository.findByLocationId(id).isEmpty();
     }
 
     @Override
@@ -102,5 +107,42 @@ public class LocationServiceImpl implements LocationService{
         if (favoriteLocation.isPresent()){
             FavoriteLocations l = favoriteLocation.get();
         }
+    }
+
+    @Override
+    public boolean isExist(double latitude, double longitude) {
+        return !locationRepository.getLocationsFromDb(latitude,longitude).isEmpty();
+    }
+
+    @Override
+    public Location getFavoriteLocationFromDbByid(long id) {
+        return favoriteLocationsRepository.findFavoriteLocationById(id).getFirst();
+    }
+
+
+
+    @Override
+    public List<Weather> favoriteLocationWeathers(){
+        List<Weather> favoriteLocationWeathers = new ArrayList<>();
+        getFavoriteLocations().forEach(fl->{
+            OpenMeteoApi openMeteoApi = new OpenMeteoApi(fl.getLatitude(),fl.getLongitude());
+            Weather actualWeather = openMeteoApi.getWeatherLocationPerHour()
+                    .stream()
+                    .filter(w->w.getTime().getDayOfMonth() == LocalDateTime.now().getDayOfMonth()
+                            && w.getTime().getHour() == LocalDateTime.now().getHour()).toList().getFirst();
+            actualWeather.setLocationId(fl.getId());
+            favoriteLocationWeathers.add(actualWeather);
+        });return  favoriteLocationWeathers;
+    }
+
+    @Override
+    public List<Location> getFavoriteLocations() {
+        List<Location> list = new ArrayList<>();
+        favoriteLocationsRepository.findAll().forEach(fl->{
+            System.out.printf(fl.getLocationId()+"");
+            Location location = locationRepository.getLocationById(fl.getLocationId()).getFirst();
+            System.out.printf(location.toString());
+            list.add(location);
+        });return list;
     }
 }

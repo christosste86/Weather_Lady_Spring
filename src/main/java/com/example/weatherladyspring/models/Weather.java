@@ -10,7 +10,7 @@ public class Weather {
 
 //    @ManyToOne
     private Location location;
-
+    private Long locationId;
     private final LocalDateTime time;
     private final Double latitude;
     private final Double longitude;
@@ -29,6 +29,18 @@ public class Weather {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public Long getLocationId() {
+        return locationId;
     }
 
     public Location getLocation() {
@@ -61,6 +73,6 @@ public class Weather {
 
     @Override
     public String toString() {
-        return String.format("%s [%s - %s] Temp: %s°C, Hum: %s%%, Wind: %skm/h", this.time, this.latitude, this.longitude, this.temperatureInC, this.humidity, this.windSpeed);
+        return String.format("%slocationId: %s [%s - %s] Temp: %s°C, Hum: %s%%, Wind: %skm/h", this.locationId, this.time, this.latitude, this.longitude, this.temperatureInC, this.humidity, this.windSpeed);
     }
 }

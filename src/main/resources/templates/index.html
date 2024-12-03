@@ -20,22 +20,36 @@
 </header>
 <main>
     <div class="favorites">
-        <div class="card" th:each="favorite : ${favoritesLocations}">
-            <a th:href="@{location-weather/{location}(location=${favorite.getId()})}">
+        <div class="card" th:each="favoriteLocation : ${favoritesLocations}">
+            <a th:href="@{location-weather/{location}(location=${favoriteLocation.getId()})}">
                 <div>
-                    <h2 th:text="${favorite.getName()}">Θεσσαλονίκη</h2>
-                    <p th:text="${favorite.getCountry()}">Greece</p>
+                    <h2 th:text="${favoriteLocation.getName()}">Θεσσαλονίκη</h2>
+                    <p th:text="${favoriteLocation.getCountry()}">Greece</p>
                     <table>
                         <thead>
-                            <tr>
-                                <th><img src="../img/icons/temperature.png"></th>
-                                <th><img src="../img/icons/humidity.png"></th>
-                                <th><img src="../img/icons/wind.png"></th>
+                            <tr th:each="favoritWeather : ${favoriteLocationsWeather}"
+                                th:if="${favoritWeather.getLocationId() == favoriteLocation.getId()}">
+                                <th>
+                                    <span th:if="${favoritWeather.getTemperatureInC() >= 25}">
+                                        <img src="/images/icons/hot.png" alt="Example Image">
+                                    </span>
+                                    <span th:if="${favoritWeather.getTemperatureInC() >= 15}">
+                                        <img src="/images/icons/temperature.png" alt="Example Image">
+                                    </span>
+                                    <span th:if="${favoritWeather.getTemperatureInC() < 15}">
+                                        <img src="/images/icons/low-temperature.png" alt="Example Image">
+                                    </span>
+                                </th>
+                                <th><img src="/images/icons/humidity.png" alt="Example Image"></th>
+                                <th><img src="/images/icons/wind.png" alt="Example Image"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                
+                            <tr th:each="favoritWeather : ${favoriteLocationsWeather}"
+                                th:if="${favoritWeather.getLocationId() == favoriteLocation.getId()}">
+                                <td th:text="${favoritWeather.getTemperatureInC()}"></td>
+                                <td th:text="${favoritWeather.getHumidity()}"></td>
+                                <td th:text="${favoritWeather.getWindSpeed()}"></td>
                             </tr>
                         </tbody>
                     </table>
